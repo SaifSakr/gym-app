@@ -76,7 +76,28 @@ app.put('/update/:id',(req,res)=>{
     //   let carbpercal = cal / 2 
     //   let carbpergram=cal / 2 / 4
     // }
-    User.findByIdAndUpdate({_id:id},newdata)
+    // User.findByIdAndUpdate({_id:id},newdata, {new:true})
+    // .then(
+    //     (updated)=>{
+    //         res.send(updated)
+    //     }
+    // )
+    // .catch(
+    //     (err)=>{
+    //         res.send(err)
+    //     }
+    // )
+    const user = User.findById(id)
+    req.body.name ? user.name = req.body.name : user.name = user.name
+    req.body.email ? user.email = req.body.email : user.email = user.email
+    req.body.age ? user.age = req.body.age : user.age = user.age
+    req.body.height ? user.height = req.body.height : user.height = user.height
+    req.body.neck ? user.neck = req.body.neck : user.neck = user.neck
+    req.body.waist ? user.waist = req.body.waist : user.waist = user.waist
+    req.body.weight ? user.weight = req.body.weight : user.weight = user.weight
+    req.body.gender ? user.gender = req.body.gender : user.gender = user.gender
+    
+    user.save()
     .then(
         (updated)=>{
             res.send(updated)
