@@ -64,17 +64,18 @@ app.delete('/delete/:id',(req,res)=>{
 })
 app.put('/update/:id',(req,res)=>{
     id=req.params.id
-    newdata=req.body
-    if (req.weight || req.height){
-      const weight = req.weight; // Assuming weight is sent in the request body
-      const height = req.height;
-      let bmi = weight / (height * height);
-      let BFP = 1.20 * bmi + 0.23 * req.age - 16.2
-      let cal = 0.45359237 * weight * 12
-      let protein = weight * 1.6
-      let carbpercal = cal / 2 
-      let carbpergram=cal / 2 / 4
-    }
+    const newdata=req.body
+    // const oldUser = User.findById(id)
+    // if (req.weight || req.height){
+    //   const weight = req.weight; // Assuming weight is sent in the request body
+    //   const height = req.height;
+    //   let bmi = weight / (height * height);
+    //   let BFP = 1.20 * bmi + 0.23 * req.age - 16.2
+    //   let cal = 0.45359237 * weight * 12
+    //   let protein = weight * 1.6
+    //   let carbpercal = cal / 2 
+    //   let carbpergram=cal / 2 / 4
+    // }
     User.findByIdAndUpdate({_id:id},newdata)
     .then(
         (updated)=>{
