@@ -62,7 +62,7 @@ app.delete('/delete/:id',(req,res)=>{
         }
     )
 })
-app.put('/update/:id',(req,res)=>{
+app.put('/update/:id',async (req,res)=>{
     id=req.params.id
     const newdata=req.body
     // const oldUser = User.findById(id)
@@ -87,7 +87,7 @@ app.put('/update/:id',(req,res)=>{
     //         res.send(err)
     //     }
     // )
-    const user = User.findById(id)
+    const user = await User.findById(id)
     req.body.name ? user.name = req.body.name : user.name = user.name
     req.body.email ? user.email = req.body.email : user.email = user.email
     req.body.age ? user.age = req.body.age : user.age = user.age
@@ -97,17 +97,8 @@ app.put('/update/:id',(req,res)=>{
     req.body.weight ? user.weight = req.body.weight : user.weight = user.weight
     req.body.gender ? user.gender = req.body.gender : user.gender = user.gender
     
-    user.save()
-    .then(
-        (updated)=>{
-            res.send(updated)
-        }
-    )
-    .catch(
-        (err)=>{
-            res.send(err)
-        }
-    )
+    await user.save()
+    res.send(user)
 })
 
 //function calculateBMI(weight_kg, height_m) {
