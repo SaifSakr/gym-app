@@ -66,24 +66,34 @@ const UserSchema = new Schema({
   },
   carbpergram:{
     type:Number,
+  },
+  bmr:{
+    type:Number,
+  },
+  sugar:{
+    type:Number,
   }
 });
 
 // pre middleware calc bmi, bfp, cal, protein, carbpercal, carbpergram when user updates their weight or height or age
 UserSchema.pre('save', function(next){
   if (this.isModified('weight') || this.isModified('height')){
-    let bmi = this.weight / (this.height * this.height);
-    let BFP = 1.20 * bmi + 0.23 * this.age - 16.2
+    let bmi = this.weight / (this.height/100 )^2 ;
+    let BFP = (1.20 * bmi) + (0.23 * this.age) - 5.4
     let cal = 0.45359237 * this.weight * 12
     let protein = this.weight * 1.6
     let carbpercal = cal / 2 
     let carbpergram=cal / 2 / 4
+    let BMR = 66.47 + ( 13.75 * this.weight ) + ( 5.003 * this.height/100) - ( 6.755 * this.age)
+    let sugar = cal * 0.0225
     this.bmi = bmi;
     this.bfp = BFP;
     this.cal = cal;
     this.protein = protein;
     this.carbpercal = carbpercal;
     this.carbpergram = carbpergram;
+    this.bmr=BMR;
+    this.sugar=sugar
   }
   next();
 })

@@ -29,12 +29,14 @@ const registerUser = async (req, res) => {
     const existingUser = await User.findOne({ email: user.email });
       const weight = user.weight; // Assuming weight is sent in the request body
       const height = user.height;
-      let bmi = weight / (height * height);
-      let BFP = 1.20 * bmi + 0.23 * user.age - 16.2
+      let bmi = weight / (height /100)^2;
+      let BFP = (1.20 * bmi) + (0.23 * user.age) - 5.4
       let cal = 0.45359237 * weight * 12
       let protein = weight * 1.6
       let carbpercal = cal / 2 
       let carbpergram=cal / 2 / 4 
+      let BMR =66.47 + ( 13.75 * weight ) + ( 5.003 * height/100) - ( 6.755 * user.age)
+      let sugar = cal * 0.0225
     if (existingUser) {
       return res.status(409).json({
         message: "User already exists",
@@ -48,9 +50,10 @@ const registerUser = async (req, res) => {
     user.protein=protein
     user.carbpercal=carbpercal
     user.carbpergram=carbpergram
+    user.bmr=BMR
+    user.sugar=sugar
     await User.create(user)
-      .then((user) => {
-        
+      .then((user) => {        
         res.status(201).json({
           message: "Registration successful",
           user:{
@@ -68,7 +71,9 @@ const registerUser = async (req, res) => {
             cal:cal,
             protein:protein,
             carbpercal:carbpercal,
-            carbpergram:carbpergram
+            carbpergram:carbpergram,
+            BMR:BMR,
+            sugar:sugar
           },
         });
       })
@@ -96,7 +101,7 @@ const loginUser = async (req, res) => {
     const token=jwt.sign({user},'my_secret_key')
     
     
-    
+
 
 
 // Route to handle BMI calculation
@@ -131,7 +136,9 @@ const loginUser = async (req, res) => {
             cal:user.cal,
             protein:user.protein,
             carbpercal:user.carbpercal,
-            carbpergram:user.carbpergram
+            carbpergram:user.carbpergram,
+            BMR:user.bmr,
+            sugar:user.sugar
         },
         token:token
       });
