@@ -30,12 +30,12 @@ const registerUser = async (req, res) => {
       const weight = user.weight; // Assuming weight is sent in the request body
       const height = user.height;
       let bmi = weight / (height /100)^2;
-      let BFP = (1.20 * bmi) + (0.23 * user.age) - 5.4
+      let BFP = user.gender=="female" ? (1.20 * bmi) + (0.23 * user.age) - 5.4 : (1.20 * bmi) + (0.23 * user.age) - 16.2
       let cal = 0.45359237 * weight * 12
       let protein = weight * 1.6
       let carbpercal = cal / 2 
       let carbpergram=cal / 2 / 4 
-      let BMR =66.47 + ( 13.75 * weight ) + ( 5.003 * height/100) - ( 6.755 * user.age)
+      let BMR =user.gender=="female" ? ( 10 * weight ) + ( 6.25* height) - ( 5 * user.age)-161 :( 10 * weight ) + ( 6.25* height) - ( 5 * user.age)+5
       let sugar = cal * 0.0225
     if (existingUser) {
       return res.status(409).json({
@@ -98,18 +98,7 @@ const loginUser = async (req, res) => {
 
     // Check if the user exists
     const user = await User.findOne({ email ,password});
-    const token=jwt.sign({user},'my_secret_key')
-    
-    
-
-
-
-// Route to handle BMI calculation
-//app.post('/calculate-bmi', (req, res) => {
-  //const weight = req.user.weight; // Assuming weight is sent in the request body
-  //const height = req.user.height; // Assuming height is sent in the request body
-
-  
+    const token=jwt.sign({user},'my_secret_key') 
   if (!user) {
       return res.status(401).json({
         message: "User not found",
@@ -155,8 +144,6 @@ const loginUser = async (req, res) => {
       error: error.message,
     });
   }
-  
-  
 };
 
 module.exports = {

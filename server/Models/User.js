@@ -79,12 +79,12 @@ const UserSchema = new Schema({
 UserSchema.pre('save', function(next){
   if (this.isModified('weight') || this.isModified('height')){
     let bmi = this.weight / (this.height/100 )^2 ;
-    let BFP = (1.20 * bmi) + (0.23 * this.age) - 5.4
+    let BFP = this.gender=="female" ? (1.20 * bmi) + (0.23 * this.age) - 5.4 : (1.20 * bmi) + (0.23 * this.age) - 16.2
     let cal = 0.45359237 * this.weight * 12
     let protein = this.weight * 1.6
     let carbpercal = cal / 2 
     let carbpergram=cal / 2 / 4
-    let BMR = 66.47 + ( 13.75 * this.weight ) + ( 5.003 * this.height/100) - ( 6.755 * this.age)
+    let BMR = this.gender=='female' ? ( 10 * this.weight ) + ( 6.25* this.height) - ( 5 * this.age)-161 :( 10 * this.weight ) + ( 6.25* this.height) - ( 5 * this.age)+5
     let sugar = cal * 0.0225
     this.bmi = bmi;
     this.bfp = BFP;
