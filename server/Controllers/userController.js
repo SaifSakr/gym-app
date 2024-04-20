@@ -29,7 +29,7 @@ const registerUser = async (req, res) => {
     const existingUser = await User.findOne({ email: user.email });
       const weight = user.weight; // Assuming weight is sent in the request body
       const height = user.height;
-      let bmi = weight / (height /100)^2;
+      let bmi = weight / ((height /100)**2);
       let BFP = user.gender=="female" ? (1.20 * bmi) + (0.23 * user.age) - 5.4 : (1.20 * bmi) + (0.23 * user.age) - 16.2
       let cal = 0.45359237 * weight * 12
       let protein = weight * 1.6

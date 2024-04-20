@@ -78,7 +78,7 @@ const UserSchema = new Schema({
 // pre middleware calc bmi, bfp, cal, protein, carbpercal, carbpergram when user updates their weight or height or age
 UserSchema.pre('save', function(next){
   if (this.isModified('weight') || this.isModified('height')){
-    let bmi = this.weight / (this.height/100 )^2 ;
+    let bmi = this.weight / ((this.height/100 )**2) ;
     let BFP = this.gender=="female" ? (1.20 * bmi) + (0.23 * this.age) - 5.4 : (1.20 * bmi) + (0.23 * this.age) - 16.2
     let cal = 0.45359237 * this.weight * 12
     let protein = this.weight * 1.6
