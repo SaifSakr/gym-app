@@ -98,7 +98,26 @@ app.put('/update/:id',async (req,res)=>{
     req.body.gender ? user.gender = req.body.gender : user.gender = user.gender
     
     await user.save()
-    res.send(user)
+    res.send({
+        id:user._id,
+        name:user.name,
+        email: user.email,
+        age:user.age,
+        height:user.height,
+        neck:user.neck,
+        waist:user.waist,
+        weight:user.weight,
+        gender:user.gender,
+        activity:user.activity,
+        bmi:user.bmi,
+        BFP:user.bfp,
+        cal:user.cal,
+        protein:user.protein,
+        carbpercal:user.carbpercal,
+        carbpergram:user.carbpergram,
+        BMR:user.bmr,
+        sugar:user.sugar
+    },)
 })
 
 //function calculateBMI(weight_kg, height_m) {
