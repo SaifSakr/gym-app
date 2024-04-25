@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const connection_string = "mongodb+srv://saifsakr02:PepC9vzvbJHJzlYK@gymapp.n69nqfs.mongodb.net/";
+const connection_string = "mongodb://localhost:27017/registersystem";
 
 function connectToDb() {
   mongoose.connect(connection_string);
